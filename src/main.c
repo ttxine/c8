@@ -146,10 +146,13 @@ static C8Emulator *c8_emulator_new(const uint8_t *program, size_t size)
 
     if (c8_emulator_new_render(emulator) < 0) {
         fprintf(stderr, "render: %s\n", SDL_GetError());
+        free(emulator);
         return NULL;
     }
 
     if (c8_emulator_new_device(emulator, program, size) < 0) {
+        c8_emulator_free_render(emulator);
+        free(emulator);
         return NULL;
     }
 
